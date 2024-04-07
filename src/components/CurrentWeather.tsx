@@ -6,13 +6,21 @@ import { WeatherCard } from "./WeatherCards/WeatherCard";
 interface ICurrentWeatherProps extends Feature {}
 
 export default function CurrentWeather({ properties }: ICurrentWeatherProps) {
-  const { data: currenWeather, isFetching } = useGetCurrenttWeather(
+  const {
+    data: currenWeather,
+    isFetching,
+    isError,
+  } = useGetCurrenttWeather(
     properties.coordinates.longitude.toString(),
     properties.coordinates.latitude.toString()
   );
 
   if (isFetching) {
     return <Spinner style={{ marginTop: "24px" }} />;
+  }
+
+  if (isError) {
+    return null;
   }
 
   if (currenWeather) {

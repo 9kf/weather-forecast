@@ -6,13 +6,21 @@ import { MiniWeatherCard } from "./WeatherCards/MiniWeatherCard";
 interface IForecastProps extends Feature {}
 
 export default function Forecast({ properties }: IForecastProps) {
-  const { data: forecast, isFetching } = useGetWeatherForecast(
+  const {
+    data: forecast,
+    isFetching,
+    isError,
+  } = useGetWeatherForecast(
     properties.coordinates.longitude.toString(),
     properties.coordinates.latitude.toString()
   );
 
   if (isFetching) {
     return <Spinner style={{ marginTop: "24px" }} />;
+  }
+
+  if (isError) {
+    return null;
   }
 
   if (forecast) {

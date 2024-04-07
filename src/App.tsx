@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
 
-import { Searchbar } from "./components";
+import { Notification, Searchbar } from "./components";
 import { Feature } from "./types";
 import CurrentWeather from "./components/CurrentWeather";
 import Forecast from "./components/Forecast";
@@ -50,6 +50,7 @@ function App() {
           </div>
         )}
       </CenterColumn>
+      <Notification />
     </QueryClientProvider>
   );
 }

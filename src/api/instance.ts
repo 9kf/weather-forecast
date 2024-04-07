@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { useNotificationStore } from "../store/notificationStore";
 
 export const api = axios.create({
   baseURL: import.meta.env.VITE_WEATHERBIT_BASE_URL,
@@ -13,3 +14,18 @@ export const searchAPI = axios.create({
     access_token: import.meta.env.VITE_MAPBOX_API_KEY,
   },
 });
+
+api.interceptors.response.use(onRequestFulfilled, onRequestRejected);
+searchAPI.interceptors.response.use(onRequestFulfilled, onRequestRejected);
+
+function onRequestFulfilled(value: AxiosResponse<any, any>) {
+  return value;
+}
+
+function onRequestRejected(error: AxiosError) {
+  useNotificationStore.getState().show({
+    message: error.message,
+    type: "error",
+  });
+  return null;
+}
