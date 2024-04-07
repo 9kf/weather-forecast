@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { HistoricalData } from "../../types";
 import { getFormattedDate } from "../../utils/helpers";
 import { api } from "../instance";
@@ -18,4 +19,22 @@ export const getHistoricalData = async (
   }
 
   return undefined;
+};
+
+export const useGet7DayHistoricalData = (lon: string, lat: string) => {
+  const yesterday = new Date(new Date().setDate(new Date().getDate() - 1));
+  const sevenDaysEarlier = new Date(
+    new Date().setDate(new Date().getDate() - 7)
+  );
+
+  return useQuery({
+    queryKey: [
+      "historical-data",
+      lon,
+      lat,
+      yesterday.toUTCString(),
+      sevenDaysEarlier.toUTCString(),
+    ],
+    queryFn: () => getHistoricalData(lon, lat, sevenDaysEarlier, yesterday),
+  });
 };
